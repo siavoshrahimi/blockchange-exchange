@@ -1,4 +1,6 @@
 require('dotenv').config();
+require('babel-register');
+require('babel-polyfill');
 
 module.exports = {
   networks: {
@@ -15,7 +17,8 @@ module.exports = {
   // Configure your compilers
   compilers: {
       solc: {
-        optimizer: {
+          version: "0.8.0",
+          optimizer: {
           enabled: true,
           runs: 200
         }
