@@ -13,10 +13,42 @@ contract Exchange{
     uint256 public feePercent;
     address constant ETHER = address(0); // store Ether in token mapping with blank address
     mapping(address => mapping(address => uint256)) public tokens;
+    mapping(uint256 => _Order) public orders;
+    mapping(uint256 => bool) public cancelledOrders;
+    uint256 public orderCount;
 
     //Events
     event Deposit (address indexed token, address indexed user, uint256 amount, uint balance);
     event Withdraw (address indexed token, address indexed user, uint256 amount, uint balance);
+    event Order(
+        uint256 id,
+        address indexed user,
+        address tokenGet,
+        uint256 amountGet,
+        address tokenGive,
+        uint256 amountGive,
+        uint256 timestamp
+    );
+    event Cancel(
+        uint256 id,
+        address indexed user,
+        address tokenGet,
+        uint256 amountGet,
+        address tokenGive,
+        uint256 amountGive,
+        uint256 timestamp
+    );
+
+    //Orders
+    struct _Order {
+        uint256 id;
+        address user;
+        address tokenGet;
+        uint256 amountGet;
+        address tokenGive;
+        uint256 amountGive;
+        uint256 timestamp;
+    }
 
     constructor(address _feeAccount, uint256 _feePercent) public {
         feeAccount = _feeAccount;
@@ -47,5 +79,31 @@ contract Exchange{
         require(Token(_token).transferFrom(msg.sender, address(this), _amount));
         tokens[_token][msg.sender] = tokens[_token][msg.sender].add(_amount);
         emit Deposit(_token, msg.sender, _amount, tokens[_token][msg.sender]);
+    }
+
+    function withdrawToken(address _token, uint256 _amount) public {
+        require(_token != ETHER);
+        require(tokens[_token][msg.sender] >= _amount);
+        require(Token(_token).transfer(msg.sender, _amount));
+        tokens[_token][msg.sender] = tokens[_token][msg.sender].sub(_amount);
+        emit Withdraw(_token, msg.sender, _amount, tokens[_token][msg.sender]);
+    }
+
+    function balanceOf(address _token, address _user) public view returns(uint256){
+        return tokens[_token][_user];
+    }
+
+    function makeOrder(address _tokenGet, uint256 _amountGet, address _tokenGive, uint256 _amountGive) public {
+        orderCount = orderCount.add(1);
+        orders[orderCount] = _Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, block.timestamp);
+        emit Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, block.timestamp);
+    }
+
+    function cancelOrder(uint256 _id) public {
+        _Order storage _order = orders[_id];
+        require(address(_order.user) == msg.sender); //same user can cancel order
+        require(_order.id == _id); //the order must exist
+        cancelledOrders[_id] = true;
+        emit Cancel(_order.id, msg.sender, _order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive, block.timestamp);
     }
 }

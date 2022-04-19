@@ -42,7 +42,7 @@ contract Token{
     }
 
     //Transfer
-    function transfer(address _to , uint256 _value) public returns(bool success){
+    function transfer(address _to , uint256 _value)  public returns(bool success){
         require(balanceOf[msg.sender] >= _value);
         _transfer(msg.sender, _to, _value);
 
