@@ -6,7 +6,10 @@ module.exports = {
 
         config.plugins.push(new NodePolyfillPlugin());
 
-        return config;
+
+        return config
+
+
     },
 
 }
