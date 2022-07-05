@@ -3,7 +3,6 @@ import { decorateOrder,RED,GREEN} from "../helpers";
 import Spinner from "./Spinner";
 
 function Trade({rawFilledOrders}){
-
     const[decoratedFilledOrders,setDecoratedFilledOrders] = useState([])
 
     const decoratingOrders = rawFilledOrders =>{
@@ -79,13 +78,13 @@ function Trade({rawFilledOrders}){
                             decoratedFilledOrders.map(order =>{
                                 return(
                                     <tr key={order.id}>
-                                        <th className='text-muted'>{order.formattedTimestamp}</th>
-                                        <th >{order.tokenAmount}</th>
-                                        <th className={`text-${order.tokenPriceClass}`}>{order.tokenPrice}</th>
+                                        <td className='text-muted'>{order.formattedTimestamp}</td>
+                                        <td >{order.tokenAmount}</td>
+                                        <td className={`text-${order.tokenPriceClass}`}>{order.tokenPrice}</td>
                                     </tr>
                                 )
                             })
-                            :<Spinner type={'table'}/>
+                            :<Spinner type='table'/>
                         }
                         </tbody>
                     </table>

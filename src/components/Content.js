@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from "react";
 import Trade from "./Trades";
+import OrderBook from "./OrderBook";
 
 function Content({exchange}) {
 
@@ -53,17 +54,7 @@ function Content({exchange}) {
                     </div>
                 </div>
             </div>
-            <div className="vertical">
-                <div className="card bg-dark text-white">
-                    <div className="card-header">
-                        Card Title
-                    </div>
-                    <div className="card-body">
-                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="/#" className="card-link">Card link</a>
-                    </div>
-                </div>
-            </div>
+            <OrderBook allOrders={orders} cancelledOrders={cancelledOrders} filledOrders={filledOrders}/>
             <div className="vertical-split">
                 <div className="card bg-dark text-white">
                     <div className="card-header">
