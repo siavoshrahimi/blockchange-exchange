@@ -1,6 +1,8 @@
 import React,{useEffect,useState} from "react";
 import Trade from "./Trades";
 import OrderBook from "./OrderBook";
+import MyTransactions from "./MyTransactions";
+import {reject} from "lodash";
 
 function Content({exchange}) {
 
@@ -15,6 +17,7 @@ function Content({exchange}) {
         //format cancelled orders
         setCancelOrders( cancelStream.map(event => event.returnValues))
 
+
         //fetch filled orders with "Trade" event stream
         let tradeStream =await exchange.getPastEvents('Trade',{fromBlock:0, toBlock:'latest'})
         //format filled orders
@@ -23,7 +26,7 @@ function Content({exchange}) {
 
         //fetch all orders with "Order" event stream
         let orderStream =await exchange.getPastEvents('Order',{fromBlock:0, toBlock:'latest'})
-        //format filled orders
+        //format all orders
         setOrders( orderStream.map(event => event.returnValues))
 
     }
@@ -31,6 +34,17 @@ function Content({exchange}) {
     useEffect( async ()=>{
         await loadAllOrders(exchange)
     },[exchange])
+
+    const openOrders = reject(orders, order =>{
+        const orderFilled = filledOrders.some(o => o.id === order.id)
+        const orderCancelled = cancelledOrders.some(o => o.id === order.id)
+        return (orderFilled || orderCancelled)
+    })
+
+    //subscribe to cancel event
+    const subscribeToCancelEvent = () => exchange.events.Cancel({}, (error, event) =>{
+        setCancelOrders([...cancelledOrders, event.returnValues])
+    })
 
     return(
         <div className="content">
@@ -54,7 +68,7 @@ function Content({exchange}) {
                     </div>
                 </div>
             </div>
-            <OrderBook allOrders={orders} cancelledOrders={cancelledOrders} filledOrders={filledOrders}/>
+            <OrderBook rawOpenOrders={openOrders}/>
             <div className="vertical-split">
                 <div className="card bg-dark text-white">
                     <div className="card-header">
@@ -65,15 +79,7 @@ function Content({exchange}) {
                         <a href="/#" className="card-link">Card link</a>
                     </div>
                 </div>
-                <div className="card bg-dark text-white">
-                    <div className="card-header">
-                        Card Title
-                    </div>
-                    <div className="card-body">
-                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="/#" className="card-link">Card link</a>
-                    </div>
-                </div>
+                <MyTransactions filledOrders={filledOrders} openOrders={openOrders} subscribeToCancelEvent={subscribeToCancelEvent}/>
             </div>
             <Trade rawFilledOrders={filledOrders}/>
         </div>

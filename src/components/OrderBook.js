@@ -3,15 +3,10 @@ import {decorateOrder, ETHER_ADDRESS, GREEN, RED} from "../helpers";
 import {reject,groupBy} from 'lodash'
 import Spinner from "./Spinner";
 
-function OrderBook({allOrders, filledOrders, cancelledOrders}) {
+function OrderBook({ rawOpenOrders}) {
 
     const [openOrders, setOpenOrders] = useState({})
 
-        const rawOrderBooksOrders = reject(allOrders, order =>{
-            const orderFilled = filledOrders.some(o => o.id === order.id)
-            const orderCancelled = cancelledOrders.some(o => o.id === order.id)
-            return (orderFilled || orderCancelled)
-        })
 
         const decoratingOpenOrders = (openOrders) =>{
             let orders;
@@ -56,10 +51,10 @@ function OrderBook({allOrders, filledOrders, cancelledOrders}) {
         }
 
         useEffect(() =>{
-            if(rawOrderBooksOrders.length >0 ){
-                decoratingOpenOrders(rawOrderBooksOrders)
+            if(rawOpenOrders.length >0 ){
+                decoratingOpenOrders(rawOpenOrders)
             }
-        },[allOrders, filledOrders, cancelledOrders])
+        },[rawOpenOrders])
 
     const renderOrder = order =>{
         return(
@@ -94,7 +89,7 @@ function OrderBook({allOrders, filledOrders, cancelledOrders}) {
                 </div>
                 <div className="card-body">
                     <table className="table table-dark table-sm small">
-                        {openOrders.buyOrders.length>0 ? showOrderBook(openOrders) :<Spinner type='table'/>}
+                        {openOrders.hasOwnProperty('buy')? showOrderBook(openOrders) :<Spinner type='table'/>}
                     </table>
                 </div>
             </div>
