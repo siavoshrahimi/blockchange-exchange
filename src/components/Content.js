@@ -3,6 +3,7 @@ import Trade from "./Trades";
 import OrderBook from "./OrderBook";
 import MyTransactions from "./MyTransactions";
 import {reject} from "lodash";
+import PriceChart from "./PriceChart";
 
 function Content({exchange}) {
 
@@ -35,6 +36,7 @@ function Content({exchange}) {
         await loadAllOrders(exchange)
     },[exchange])
 
+    //take out open orders from filled and cancelled orders
     const openOrders = reject(orders, order =>{
         const orderFilled = filledOrders.some(o => o.id === order.id)
         const orderCancelled = cancelledOrders.some(o => o.id === order.id)
@@ -70,15 +72,7 @@ function Content({exchange}) {
             </div>
             <OrderBook rawOpenOrders={openOrders}/>
             <div className="vertical-split">
-                <div className="card bg-dark text-white">
-                    <div className="card-header">
-                        Card Title
-                    </div>
-                    <div className="card-body">
-                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="/#" className="card-link">Card link</a>
-                    </div>
-                </div>
+                <PriceChart filledOrders={filledOrders}/>
                 <MyTransactions filledOrders={filledOrders} openOrders={openOrders} subscribeToCancelEvent={subscribeToCancelEvent}/>
             </div>
             <Trade rawFilledOrders={filledOrders}/>

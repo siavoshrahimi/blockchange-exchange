@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from "react";
 import {decorateOrder, ETHER_ADDRESS, GREEN, RED} from "../helpers";
-import {reject,groupBy} from 'lodash'
+import {groupBy} from 'lodash'
 import Spinner from "./Spinner";
 
 function OrderBook({ rawOpenOrders}) {
