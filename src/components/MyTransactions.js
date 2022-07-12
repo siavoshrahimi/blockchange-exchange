@@ -62,7 +62,6 @@ function MyTransactions ({filledOrders, openOrders, subscribeToCancelEvent}) {
         //decorate order - add display attributes
         orders = decorateMyOpenOrders(orders)
 
-
         setMyOpenOrders(orders)
     }
 
@@ -78,8 +77,6 @@ function MyTransactions ({filledOrders, openOrders, subscribeToCancelEvent}) {
 
     const decorateMyOpenOrder = (order) =>{
         let orderType = order.tokenGive === ETHER_ADDRESS ? 'buy' : 'sell';
-
-
         return({
             ...order,
             orderType,
@@ -93,7 +90,7 @@ function MyTransactions ({filledOrders, openOrders, subscribeToCancelEvent}) {
             creatingMyFilledOrders(account, filledOrders)
             creatingMyOpenOrders(account, openOrders)
         }
-    },[openOrders, filledOrders])
+    },[openOrders, filledOrders.length])
 
 
 
@@ -159,7 +156,9 @@ function MyTransactions ({filledOrders, openOrders, subscribeToCancelEvent}) {
                                         <th>DAPP/ETH</th>
                                     </tr>
                                 </thead>
-                                {myFilledOrders.length > 0 ? showMyFilledOrders(myFilledOrders) : <Spinner type="table"/>}
+                                {myFilledOrders.length > 0 ? showMyFilledOrders(myFilledOrders)
+                                    : loading? <Spinner type="table" /> :<caption>no transaction yet</caption>
+                                }
                             </table>
                         </Tab>
                         <Tab eventKey="orders" title="Orders">
@@ -173,7 +172,7 @@ function MyTransactions ({filledOrders, openOrders, subscribeToCancelEvent}) {
                                 </thead>
                                 { (myOpenOrders.length > 0 && !loading)?
                                     showMyOpenOrders(myOpenOrders)
-                                    : <Spinner type="table" />}
+                                    : loading? <Spinner type="table" /> :<caption>no transaction yet</caption>}
                             </table>
                         </Tab>
                     </Tabs>

@@ -12,6 +12,13 @@ export const ether = wei => {
 //same as ether
 export const tokens = ether;
 
+export const formatBalance = balance =>{
+    const precision = 100 //2 decimal places
+    balance = ether(balance)
+    balance = Math.round(balance*precision)/precision // use 2 decimal places
+    return balance
+}
+
 export const ETHER_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 //decorate orders

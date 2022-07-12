@@ -1,14 +1,18 @@
 import React,{useEffect,useState} from "react";
 import {decorateOrder, ETHER_ADDRESS, GREEN, RED} from "../helpers";
+import {OverlayTrigger, Tooltip} from 'react-bootstrap'
 import {groupBy} from 'lodash'
 import Spinner from "./Spinner";
+import {useSelector} from "react-redux";
 
-function OrderBook({ rawOpenOrders}) {
-
+function OrderBook({ rawOpenOrders, subscribeToTradeEvent, filledOrders}) {
+    const {account, exchange} = useSelector(state => state.web3)
     const [openOrders, setOpenOrders] = useState({})
+    const [loading , setLoading] = useState(false)
 
 
-        const decoratingOpenOrders = (openOrders) =>{
+
+    const decoratingOpenOrders = (openOrders) =>{
             let orders;
             //Decorate orders
             orders = decorateOrderBookOrders(openOrders)
@@ -46,7 +50,7 @@ function OrderBook({ rawOpenOrders}) {
                 ...order,
                 orderType,
                 orderTypeClass: (orderType === 'buy' ? GREEN : RED),
-                orderFillClass :orderType === 'buy' ? 'sell' : 'buy'
+                orderFillAction :orderType === 'buy' ? 'sell' : 'buy'
             })
         }
 
@@ -54,15 +58,39 @@ function OrderBook({ rawOpenOrders}) {
             if(rawOpenOrders.length >0 ){
                 decoratingOpenOrders(rawOpenOrders)
             }
-        },[rawOpenOrders])
+        },[rawOpenOrders, filledOrders.length])
 
     const renderOrder = order =>{
         return(
-            <tr key={order.id}>
-                <td>{order.tokenAmount}</td>
-                <td className={`text-${order.orderTypeClass}`}>{order.tokenPrice}</td>
-                <td>{order.etherAmount}</td>
-            </tr>
+            <OverlayTrigger
+                key={order.id}
+                placement={'auto'}
+                overlay={
+                    <Tooltip id={order.id}>
+                        {`Click here to ${order.orderFillAction} `}
+                    </Tooltip>
+                }
+            >
+                <tr key={order.id}
+                    className='fill-order'
+                    onClick={e =>{
+                        exchange.methods.fillOrder(order.id).send({from: account})
+                            .on('transactionHash', hash =>{
+                                setLoading(true)
+                                subscribeToTradeEvent()
+                                setLoading(false)
+                            })
+                            .on('error', error =>{
+                                console.log(error);
+                                window.alert('There was an error')
+                            })
+                    }}
+                >
+                    <td>{order.tokenAmount}</td>
+                    <td className={`text-${order.orderTypeClass}`}>{order.tokenPrice}</td>
+                    <td>{order.etherAmount}</td>
+                </tr>
+            </OverlayTrigger>
         )
     }
 
@@ -89,7 +117,7 @@ function OrderBook({ rawOpenOrders}) {
                 </div>
                 <div className="card-body">
                     <table className="table table-dark table-sm small">
-                        {openOrders.hasOwnProperty('buy')? showOrderBook(openOrders) :<Spinner type='table'/>}
+                        {openOrders.hasOwnProperty('buy') && !loading? showOrderBook(openOrders) :<Spinner type='table'/>}
                     </table>
                 </div>
             </div>

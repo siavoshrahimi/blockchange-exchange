@@ -145,7 +145,11 @@
     padding-left: 20px;
 }
 
-td.cancel-order {
+td.cancel-order{
+    cursor: pointer;
+}
+
+tr.fill-order{
     cursor: pointer;
 }
 

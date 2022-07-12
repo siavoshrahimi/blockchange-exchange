@@ -1,6 +1,6 @@
 import React from "react";
 
-function Navbar(props){
+function Navbar({account}){
     return(
         <nav className="navbar navbar-expand-sm navbar-dark bg-primary px-2" style={{justifyContent:"space-between"}}>
             <a className="navbar-brand" href="/#">Dapp Token Exchange</a>
@@ -11,9 +11,9 @@ function Navbar(props){
                 <li className="nav-item">
                     <a
                         className="nav-link small"
-                        href= {`https://etherscan.io/address/${props.account}`}
+                        href= {`https://etherscan.io/address/${account}`}
                      >
-                        {props.account}
+                        {account}
                     </a>
                 </li>
             </ul>
