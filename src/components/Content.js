@@ -45,12 +45,13 @@ function Content({exchange}) {
     })
 
     //subscribe to cancel event
-    const subscribeToCancelEvent = () => exchange.events.Cancel({}, (error, event) =>{
-        setCancelOrders([...cancelledOrders, event.returnValues])
+    const subscribeToCancelEvent =  () => exchange.events.Cancel({}, async (error, event) =>{
+        const newCancelOrder =await event.returnValues
+        setCancelOrders([...cancelledOrders, newCancelOrder ])
     })
 
-    const subscribeToTradeEvent = () => exchange.events.Trade({}, (error, event) =>{
-        const newFilledOrder = event.returnValues
+    const subscribeToTradeEvent = () => exchange.events.Trade({}, async (error, event) =>{
+        const newFilledOrder =await event.returnValues
         //prevent an order filled twice
         let index = filledOrders.findIndex(order => order.id === newFilledOrder.id)
         if(index === -1){

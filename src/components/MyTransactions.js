@@ -90,7 +90,7 @@ function MyTransactions ({filledOrders, openOrders, subscribeToCancelEvent}) {
             creatingMyFilledOrders(account, filledOrders)
             creatingMyOpenOrders(account, openOrders)
         }
-    },[openOrders, filledOrders.length])
+    },[openOrders.length, filledOrders.length])
 
 
 
