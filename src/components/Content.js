@@ -5,6 +5,7 @@ import MyTransactions from "./MyTransactions";
 import {reject,findIndex} from "lodash";
 import PriceChart from "./PriceChart";
 import Balance from "./Balance";
+import NewOrder from "./NewOrder";
 
 function Content({exchange}) {
 
@@ -50,6 +51,7 @@ function Content({exchange}) {
         setCancelOrders([...cancelledOrders, newCancelOrder ])
     })
 
+    //subscribe to trade event
     const subscribeToTradeEvent = () => exchange.events.Trade({}, async (error, event) =>{
         const newFilledOrder =await event.returnValues
         //prevent an order filled twice
@@ -62,19 +64,24 @@ function Content({exchange}) {
 
     })
 
+    //subscribe to Order event
+    const subscribeToOrderEvent = ()=>{
+        exchange.events.Order({}, async (error, event) =>{
+            const newOrder =await event.returnValues
+            //prevent an order filled twice
+            let index = orders.findIndex(order => order.id === newOrder.id)
+            if(index === -1){
+                setOrders([...orders, newOrder])
+            }else {
+                setOrders([...orders])
+            }
+        })}
+
     return(
         <div className="content">
             <div className="vertical-split">
                 <Balance/>
-                <div className="card bg-dark text-white">
-                    <div className="card-header">
-                        Card Title
-                    </div>
-                    <div className="card-body">
-                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="/#" className="card-link">Card link</a>
-                    </div>
-                </div>
+                <NewOrder subscribeToOrderEvent={subscribeToOrderEvent} allOrders={orders}/>
             </div>
             <OrderBook rawOpenOrders={openOrders} subscribeToTradeEvent={subscribeToTradeEvent} filledOrders={filledOrders}/>
             <div className="vertical-split">

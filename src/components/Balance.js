@@ -71,18 +71,18 @@ function Balance() {
                 <Tab eventKey="deposit" title="Deposit" className="bg-dark">
                     <table className="table table-dark table-sm small">
                         <thead>
-                        <tr>
-                            <th>Token</th>
-                            <th>Wallet</th>
-                            <th>Exchange</th>
-                        </tr>
+                            <tr>
+                                <th>Token</th>
+                                <th>Wallet</th>
+                                <th>Exchange</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>ETH</td>
-                            <td>{ethBalance}</td>
-                            <td>{exchangeEtherBalance}</td>
-                        </tr>
+                            <tr>
+                                <td>ETH</td>
+                                <td>{ethBalance}</td>
+                                <td>{exchangeEtherBalance}</td>
+                            </tr>
                         </tbody>
                     </table>
                     <form className="row" onSubmit={ (event) => {
@@ -109,13 +109,20 @@ function Balance() {
                             <button type="submit" className="btn btn-primary btn-block btn-sm">Deposit</button>
                         </div>
                     </form>
-                    <table className="table table-dark table-sm small">
+                    <table className="table table-dark table-sm small mt-2">
+                        <thead>
+                            <tr>
+                                <th>Token</th>
+                                <th>Wallet</th>
+                                <th>Exchange</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                        <tr>
-                            <td>DAPP</td>
-                            <td>{tokenBalance}</td>
-                            <td>{exchangeTokenBalance}</td>
-                        </tr>
+                            <tr>
+                                <td>DAPP</td>
+                                <td>{tokenBalance}</td>
+                                <td>{exchangeTokenBalance}</td>
+                            </tr>
                         </tbody>
                     </table>
                     <form className="row" onSubmit={ (event) => {
@@ -151,18 +158,18 @@ function Balance() {
                 <Tab eventKey="withdraw" title="Withdraw" className="bg-dark">
                     <table className="table table-dark table-sm small">
                         <thead>
-                        <tr>
-                            <th>Token</th>
-                            <th>Wallet</th>
-                            <th>Exchange</th>
-                        </tr>
+                            <tr>
+                                <th>Token</th>
+                                <th>Wallet</th>
+                                <th>Exchange</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>ETH</td>
-                            <td>{ethBalance}</td>
-                            <td>{exchangeEtherBalance}</td>
-                        </tr>
+                            <tr>
+                                <td>ETH</td>
+                                <td>{ethBalance}</td>
+                                <td>{exchangeEtherBalance}</td>
+                            </tr>
                         </tbody>
                     </table>
                     <form className="row" onSubmit={ (event) => {
@@ -172,12 +179,6 @@ function Balance() {
                                 setLoading(true)
                                 subscribeToEvent('withdraw')
                                 setLoading(false)
-                            })
-                            .on('receipt',() =>{
-
-                            })
-                            .on('confirmation' , () =>{
-
                             })
                             .on('error' , error=>{
                                 window.alert('there was an error')
@@ -195,13 +196,20 @@ function Balance() {
                             <button type="submit" className="btn btn-primary btn-block btn-sm">Withdraw</button>
                         </div>
                     </form>
-                    <table className="table table-dark table-sm small">
+                    <table className="table table-dark table-sm small mt-2">
+                        <thead>
+                            <tr>
+                                <th>Token</th>
+                                <th>Wallet</th>
+                                <th>Exchange</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                        <tr>
-                            <td>DAPP</td>
-                            <td>{tokenBalance}</td>
-                            <td>{exchangeTokenBalance}</td>
-                        </tr>
+                            <tr>
+                                <td>DAPP</td>
+                                <td>{tokenBalance}</td>
+                                <td>{exchangeTokenBalance}</td>
+                            </tr>
                         </tbody>
                     </table>
 
