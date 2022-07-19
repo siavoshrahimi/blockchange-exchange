@@ -44,7 +44,6 @@ function Balance() {
         setLoading(false)
     },[web3, exchange, token, account])
 
-    //console.log(ethBalance, tokenBalance, exchangeTokenBalance, exchangeEtherBalance, loading)
 
     const subscribeToEvent =  (eventName) =>{
        let events

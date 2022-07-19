@@ -50,7 +50,7 @@ export const chartOptions = {
             minWidth: 0,
             maxWidth: 160,
             style: {
-                color: '#fff',
+                colors: '#fff',
                 fontSize: '8px',
                 cssClass: 'apexcharts-yaxis-label',
             },

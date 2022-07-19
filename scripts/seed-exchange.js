@@ -46,7 +46,7 @@ module.exports = async (callback) => {
         const user2 = accounts[1]
 
         //user 1 deposit Ether
-        amount = 1
+        amount = 0.001
         await exchange.depositEther({from:user1, value:ether(amount)})
         console.log(`deposited ${amount} Ether from ${user1}`)
 

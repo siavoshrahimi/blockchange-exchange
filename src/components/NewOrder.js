@@ -88,7 +88,7 @@ function NewOrder({subscribeToOrderEvent, allOrders}) {
                                 />
                             </div>
                         </div>
-                        <button type="submit" className="btn btn-primary btn-sm btn-block">Buy Order</button>
+                        <button type="submit" className="btn btn-primary btn-sm btn-block mt-2">Buy Order</button>
                         { price && amount ? <small>Total: {amount * price} ETH</small> : null }
                     </form>
 
@@ -124,7 +124,7 @@ function NewOrder({subscribeToOrderEvent, allOrders}) {
                                 />
                             </div>
                         </div>
-                        <button type="submit" className="btn btn-primary btn-sm btn-block">Sell Order</button>
+                        <button type="submit" className="btn btn-primary btn-sm btn-block mt-2">Sell Order</button>
                         { price && amount ? <small>Total: {amount * price} ETH</small> : null }
                     </form>
 
