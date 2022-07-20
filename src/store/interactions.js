@@ -10,7 +10,7 @@ export const loadWeb3 =() => async dispatch =>{
     const accounts = await web3.eth.getAccounts();
     const account=  accounts[0];
     const networkId = await web3.eth.net.getId();
-    if(networkId === 1 || networkId === 3 || networkId === 4 || networkId === 5 || networkId == null){
+    if(networkId !== 42 ){
         window.alert('Token smart contract not detected on the current network. Please select another network with Metamask')
     }
     const token = new web3.eth.Contract(Token.abi, Token.networks[networkId].address);

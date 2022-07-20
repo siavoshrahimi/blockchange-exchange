@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import Spinner from "./Spinner";
 import {Tab, Tabs} from "react-bootstrap";
 import {useSelector} from "react-redux";
-import {ETHER_ADDRESS} from "../helpers";
+import {ETHER_ADDRESS, formatBalance} from "../helpers";
 
 function NewOrder({subscribeToOrderEvent, allOrders}) {
     const {account, exchange,token,web3} = useSelector(state => state.web3)
@@ -10,6 +10,8 @@ function NewOrder({subscribeToOrderEvent, allOrders}) {
     const [amount, setAmount] = useState(null)
     const [price, setPrice] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [exchangeEtherBalance , setExchangeEtherBalance] = useState(null)
+    const [exchangeTokenBalance , setExchangeTokenBalance] = useState(null)
 
     const buyOrder = async (web3, exchange, token, account, amount, price) =>{
         const tokenGet = token.options.address;
@@ -49,9 +51,10 @@ function NewOrder({subscribeToOrderEvent, allOrders}) {
             })
     }
 
-    useEffect(() =>{
-
-    },[allOrders])
+    useEffect(async () =>{
+         setExchangeEtherBalance(await exchange.methods.balanceOf(ETHER_ADDRESS, account).call())
+         setExchangeTokenBalance(await exchange.methods.balanceOf(token.options.address, account).call())
+    },[allOrders, exchange])
 
 
     const showForm = () =>{
@@ -62,7 +65,12 @@ function NewOrder({subscribeToOrderEvent, allOrders}) {
 
                     <form onSubmit={async (event) => {
                         event.preventDefault()
-                        await buyOrder( web3, exchange, token, account, amount, price)
+                        if(formatBalance(exchangeEtherBalance) < (amount * price)){
+                            window.alert("You don't have sufficient Eth in your exchange's account please charge your account first")
+                        }else {
+                            await buyOrder( web3, exchange, token, account, amount, price)
+                        }
+
                     }}>
                         <div className="form-group small mt-2">
                             <label>Buy Amount (DAPP)</label>
@@ -98,7 +106,11 @@ function NewOrder({subscribeToOrderEvent, allOrders}) {
 
                     <form onSubmit={async (event) => {
                         event.preventDefault()
-                        await sellOrder( web3, exchange, token, account, amount, price)
+                        if(formatBalance(exchangeTokenBalance) < amount){
+                            window.alert("You don't have sufficient Dapp token in your exchange's account please charge your account first")
+                        }else {
+                            await sellOrder( web3, exchange, token, account, amount, price)
+                        }
                     }}>
                         <div className="form-group small mt-2">
                             <label>Sell Amount (DAPP)</label>

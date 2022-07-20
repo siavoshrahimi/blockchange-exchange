@@ -5,7 +5,7 @@ import Spinner from "./Spinner";
 import {Tab, Tabs} from "react-bootstrap";
 
 
-function Balance() {
+function Balance({rawOpenOrders}) {
     const {account, exchange,token,web3} = useSelector(state => state.web3)
 
     const [ethBalance , setEthBalance] = useState(null)
@@ -42,7 +42,7 @@ function Balance() {
         setLoading(true)
         await loadBalances(web3, exchange, token, account)
         setLoading(false)
-    },[web3, exchange, token, account])
+    },[web3, exchange, token, account,rawOpenOrders])
 
 
     const subscribeToEvent =  (eventName) =>{
@@ -90,6 +90,7 @@ function Balance() {
                             .on('transactionHash',hash=>{
                                 setLoading(true)
                                 subscribeToEvent('deposit')
+                                window.location.reload()
                                 setLoading(false)
                             })
                             .on('error' , error=>{
@@ -133,6 +134,7 @@ function Balance() {
                                     .on('transactionHash',hash=>{
                                         setLoading(true)
                                         subscribeToEvent('deposit')
+                                        window.location.reload()
                                         setLoading(false)
                                     })
                                     .on('error' , error=>{
@@ -177,6 +179,7 @@ function Balance() {
                             .on('transactionHash',()=>{
                                 setLoading(true)
                                 subscribeToEvent('withdraw')
+                                window.location.reload()
                                 setLoading(false)
                             })
                             .on('error' , error=>{
@@ -218,6 +221,7 @@ function Balance() {
                             .on('transactionHash', (hash) => {
                                 setLoading(true)
                                 subscribeToEvent('withdraw')
+                                window.location.reload()
                                 setLoading(false)
                             })
                             .on('error',(error) => {

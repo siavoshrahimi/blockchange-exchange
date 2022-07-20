@@ -80,7 +80,7 @@ function Content({exchange}) {
     return(
         <div className="content">
             <div className="vertical-split">
-                <Balance/>
+                <Balance rawOpenOrders={openOrders}/>
                 <NewOrder subscribeToOrderEvent={subscribeToOrderEvent} allOrders={orders}/>
             </div>
             <OrderBook rawOpenOrders={openOrders} subscribeToTradeEvent={subscribeToTradeEvent} filledOrders={filledOrders}/>

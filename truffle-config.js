@@ -6,7 +6,7 @@ const HDWalletProvider = require('truffle-hdwallet-provider-privkey');
 
 privateKeys = privateKeys.split(",")
 const nodeUrl = `https://kovan.infura.io/v3/${process.env.INFURA_API_KEY}`
-console.log(nodeUrl)
+
 
 module.exports = {
   networks: {

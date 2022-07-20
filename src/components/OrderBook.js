@@ -79,6 +79,7 @@ function OrderBook({ rawOpenOrders, subscribeToTradeEvent, filledOrders}) {
                                 setLoading(true)
                                 subscribeToTradeEvent()
                                 setLoading(false)
+                                //window.location.reload()
                             })
                             .on('error', error =>{
                                 console.log(error);
