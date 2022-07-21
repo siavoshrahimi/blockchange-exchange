@@ -6,7 +6,7 @@ import Token from "../abis/Token";
 import Exchange from "../abis/Exchange";
 
 export const loadWeb3 =() => async dispatch =>{
-    if(typeof window.ethereum!=='undefined'){
+    if(typeof window.ethereum !=='undefined'){
         const web3 = new Web3(window.ethereum)
         const accounts = await web3.eth.getAccounts();
         const account=  accounts[0];
