@@ -5,7 +5,9 @@ module.exports = {
     webpack: function(config, env) {
         // ...add your webpack config
 
-        config.plugins.push(new NodePolyfillPlugin());
+        config.plugins.push(new NodePolyfillPlugin({
+            excludeAliases: ['console'],
+        }));
 
 
         return config
