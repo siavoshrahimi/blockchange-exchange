@@ -17,7 +17,7 @@ function App () {
         await dispatch(loadWeb3())
     },[dispatch])
 
-    const {web3,token,exchange,account,isLoading} = useSelector(state => state.web3)
+    const {exchange,account,isLoading} = useSelector(state => state.web3)
 
 
     return (
