@@ -13,8 +13,8 @@ function App () {
     const dispatch = useDispatch();
 
 
-    useEffect( async () =>{
-        await dispatch(loadWeb3())
+    useEffect(  () =>{
+         dispatch(loadWeb3())
     },[dispatch])
 
     const {exchange,account,isLoading} = useSelector(state => state.web3)
