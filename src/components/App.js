@@ -15,6 +15,7 @@ function App () {
 
     useEffect(  () =>{
          dispatch(loadWeb3())
+        debugger
     },[dispatch])
 
     const {exchange,account,isLoading} = useSelector(state => state.web3)

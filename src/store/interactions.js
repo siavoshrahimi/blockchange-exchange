@@ -11,6 +11,7 @@ export const loadWeb3 =() => async dispatch =>{
         const accounts = await web3.eth.getAccounts();
         const account=  accounts[0];
         const networkId = await web3.eth.net.getId();
+        debugger
         if(networkId === 42){
             const token = new web3.eth.Contract(Token.abi, Token.networks[networkId].address);
             const exchange = new web3.eth.Contract(Exchange.abi, Exchange.networks[networkId].address);
