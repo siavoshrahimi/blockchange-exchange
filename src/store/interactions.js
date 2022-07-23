@@ -17,7 +17,7 @@ export const loadWeb3 =() => async dispatch =>{
             const exchange = new web3.eth.Contract(Exchange.abi, Exchange.networks[networkId].address);
             dispatch(web3Loaded(web3, account, token, exchange))
         }else {
-            window.alert("Please connect your wallet")
+            window.alert("Please connect your wallet and make sure you are in kovan network")
 
         }
 
