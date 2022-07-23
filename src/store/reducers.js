@@ -1,6 +1,7 @@
 import{combineReducers} from "redux";
 import {
     WEB3_LOADED,
+    GET_ACCOUNT
 } from "./types";
 
 const initialState = {
@@ -21,6 +22,11 @@ function web3(state = initialState , action) {
                 token:action.token,
                 exchange:action.exchange,
                 isLoading: false
+            }
+        case GET_ACCOUNT:
+            return {
+                ...state,
+                account: action.account
             }
         default:
             return state
